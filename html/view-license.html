@@ -1,0 +1,39 @@
+<html>
+<head>
+  <title>Neo4j Startup Program: View License</title>
+  <script type='text/javascript' src='https://neo4j.com/wp-content/themes/neo4jweb/assets/js/vendor/jquery-3.3.1.min.js?ver=3.3.1'></script>
+  <script type='text/javascript' src='https://neo4j.com/wp-content/themes/neo4jweb/assets/js/vendor/jquery-migrate-3.0.0.min.js?ver=3.0.0'></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script> 
+  <script src="//neo4jsandbox.com/js/jwt-decode.min.js"></script>
+  <script src="//neo4jsandbox.com/js/parse-params.js"></script>
+  <script src="https://browser.sentry-cdn.com/4.5.3/bundle.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<style>
+h1 {
+  font-family: "Open Sans";
+}
+pre {
+ white-space: pre-wrap;       /* css-3 */
+ white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+ white-space: -pre-wrap;      /* Opera 4-6 */
+ white-space: -o-pre-wrap;    /* Opera 7 */
+ word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+</style>
+<div style="width: 1000px; border-width: 1px; border-style: solid; border-color: black; padding: 15px;">
+<span id="pre-load">
+<center><img src="https://s3.amazonaws.com/neo4j-startup-program/neo4j_globe_animated.gif"></center>
+<h1 style="text-align: center">Loading...</h1>
+</span>
+<span id="post-load" style="display: none;">
+<center><img src="https://neo4j.com/wp-content/themes/neo4jweb/assets/images/neo4j-logo-2015.png" width="150"></img></center>
+<h1 id="license_description"></h1>
+<script src="{{js_location}}?versionId={{js_version}}"></script>
+<div id="license_instructions"></div>
+<div id="license_text"></div>
+</span>
+</div>
+</body>
+</html>
+

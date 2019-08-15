@@ -1,0 +1,509 @@
+<style>
+  label.inline {
+    color: white;
+  }
+  input[type="text"], textarea {
+    background-color: white;
+  }
+  .error {
+    color: red;
+    padding-bottom: 20px;
+  }
+</style>
+
+<script src="https://browser.sentry-cdn.com/4.5.3/bundle.min.js" crossorigin="anonymous"></script>
+
+<script>
+  var js_location = '{{js_location}}';
+  var js_version = '{{js_version}}';
+</script>
+
+
+<section id="content" role="main" class="flexible-content">
+  <article id="post-102244" class="post-102244 page type-page status-publish hentry">
+    <div class="marquee-neo marquee-neo--md" style="background-image: url('https://s3.amazonaws.com/dev.assets.neo4j.com/wp-content/uploads/20170804162029/startup-banner-2017.jpg')">
+      <div class="row">
+        <div class="columns">
+          <h1 class="entry-title">Neo4j Empowers Educators in the Classroom!</h1>
+        </div>
+      </div>
+    </div>
+    <section id="" class="bg-dkgrey med flexible-content-section-0">
+      <div class="row">
+        <div class="columns">
+          <h2>Educator Program</h2>
+          <p class="lead blue">The next generation of world-changing ideas will be powered by graphs - and we are here to help you bring graph and Neo4j to your students in the classroom through free access to the World's Leading Graph Database.  Graphs drive education!</p>
+        </div>
+      </div>
+    </section>
+    <section id="" class="bg-dkgrey lg utility-collapse-top startup-cta flexible-content-section-1 post-apply" style="display: none;">
+      <div class="row">
+        <div class="columns">
+          <div class="row post-apply" data-equalizer="" style="display: none;">
+            <div class="column medium-6">
+              <div class="startup-cta__box" data-equalizer-watch="">
+                <h2 class="subheader blue lg bold">Thanks!</h2>
+                <p>Thanks for submitting your application to the Neo4j Educator Program. We'll process your application within the next few days and respond via email.  You can always <a href="https://neo4j.com/graphacademy/edu-program/">return to this site</a> to check the status of the application, as well.</p>
+                <p><span id="application-id"></span></p>
+                <p><a role="button" class="button medium blue" style="margin-bottom: 0px" id="load-edu-home-button">Refresh for App Status</a></p>
+              </div>
+            </div>
+            <div class="column medium-6">
+              <div class="startup-cta__box last" data-equalizer-watch="">
+                <h2 class="subheader green lg bold">Questions?</h2>
+                <p>Reach out to us at <a href="mailto:edu@neo4j.com">edu@neo4j.com</a> if you have any questions about your application or status. We are not able to provide technical support at this address. If you have technical questions, please post them on <a href="https://community.neo4j.com">community.neo4j.com</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="" class="bg-dkgrey lg utility-collapse-top startup-cta flexible-content-section-1 loading-icon" style="display: none;">
+      <div class="row">
+        <div class="columns">
+          <div class="row" data-equalizer="">
+            <div class="column medium-12">
+              <center><img src="https://s3.amazonaws.com/neo4j-startup-program/neo4j_globe_animated_white.gif"></center>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="" class="bg-dkgrey lg utility-collapse-top startup-cta flexible-content-section-1 pre-apply" style="display: none;">
+      <div class="row">
+        <div class="columns">
+          <div class="row" data-equalizer="">
+            <div class="column medium-6">
+              <div class="startup-cta__box" data-equalizer-watch="">
+                <h2 class="subheader green lg bold">Who's eligible?</h2>
+                <p>Whether you're new or an experienced graph educator, Neo4j wants to provide the technology and the resources you need to show others the value of data with graph!</p>
+                <h3 class="small">Requirements:</h3>
+                <ul>
+                  <li>Accredited, non-profit institutions</li>
+                  <li>K-12, college, university programs</li>
+                </ul>
+              </div>
+            </div>
+            <div class="column medium-6">
+              <div class="startup-cta__box last" data-equalizer-watch="">
+                <h2 class="subheader green lg bold">What does Neo4j provide?</h2>
+                <p>Educators in the program can easily receive Neo4j Enterprise Edition for lab and student computers, enabling instructors to utilize the application for student projects and lessons.</p>
+                <h3 class="small">Included for Free:</h3>
+                <ul>
+                  <li>License and installation of Neo4j Desktop (with <a href="https://neo4j.com/product/">Neo4j Enterprise</a>) for lab and student machines</li>
+                  <li>Teaching resources and materials created from Neo4j.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="columns">
+          <div class="row" style="margin-top: 20px;">
+            <div class="column medium-12">
+              <div class="startup-cta__box" data-equalizer-watch="">
+                <h2 class="subheader green lg bold">Provided resources:</h2>
+                <ul>
+                  <li>Intro to Neo4j course slides (7+ hours of slides and guided exercises organized into modules)</li>
+                  <li>Graph Data Modeling course slides (7 hours of slides and guided exercises organized into 2 modules)</li>
+                  <li>Links to tutorials, additional help, and resources</li>
+                  <li><a href="https://community.neo4j.com">Neo4j Community Site</a> support with a private group for instructors to collaborate and share tips</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="columns">
+          <div class="row" data-equalizer="" style="margin-top: 20px;">
+            <div class="column medium-12">
+              <div class="startup-cta__box" data-equalizer-watch="" style="padding-top: 20px; padding-bottom: 20px;">
+                <h2 class="subheader green lg bold" style="text-align: center;">Join the Educator Program Now</h2>
+                <p style="text-align: center; margin-bottom: 0px;">
+                  <a role="button" class="button medium blue" style="margin-bottom: 0px" id="application-signin">Login or Create Account to Sign Up</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="" class="bg-dkgrey lg utility-collapse-top startup-cta flexible-content-section-1 existing-applications" style="display: none; padding-bottom: 30px;">
+      <div class="row">
+        <div class="columns">
+          <div class="row" data-equalizer="">
+            <div class="column medium-12">
+              <div class="startup-cta__box" data-equalizer-watch="" id="existing-applications-list">
+                <h2 class="subheader blue lg bold">Existing Applications</h2>
+                <div class="row" id="existing-applications-list-header">
+                  <div class="small-12 columns">
+                    <div class="row">
+                      <div class="small-2 columns app-date"><b>Date</b></div>
+                      <div class="small-2 columns app-school-name"><b>School</b></div>
+                      <div class="small-2 columns app-status"><b>Status</b></div>
+                      <div class="small-4 columns app-licenses"><b>Licenses</b></div>
+                      <div class="small-2 columns license-expires"><b>Expires</b></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" id="existing-applications-list-header" style="margin-top: 20px">
+                  <div class="small-12 columns">
+                    <b>Any questions about application status?</b>  Please <a href="mailto:edu@neo4j.com">email us</a>.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="" class="bg-dkgrey lg utility-collapse-top startup-cta flexible-content-section-1 available-downloads" style="display: none; padding-bottom: 30px;">
+      <div class="row">
+        <div class="columns">
+          <div class="row" data-equalizer="">
+            <div class="column medium-12">
+              <div class="startup-cta__box" data-equalizer-watch="" id="available-downloads-list">
+                <h2 class="subheader blue lg bold">Available Downloads</h2>
+                <div class="row" id="available-downloads-list-header">
+                  <div class="small-12 columns">
+                    <div class="row">
+                      <div class="small-3 columns release-date"><div style="width: 140px; text-align: right"><b>Date</b></div></div>
+                      <div class="small-3 columns release-product"><b>Product</b></div>
+                      <div class="small-2 columns release-version"><b>Version</b></div>
+                      <div class="small-4 columns download-link"><b>Download Links</b></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="" class="bg-dkgrey lg utility-collapse-top startup-cta flexible-content-section-1 application-toggle" style="display: none;">
+      <div class="row">
+        <div class="columns">
+          <div class="row" data-equalizer="">
+            <div class="column medium-12">
+              <div class="row application-toggle" style="margin-top: 30px;" data-equalizer="">
+                <div class="column medium-6">
+                  <button id="application-toggle-button">Submit new application</button>
+                </div>
+                <div class="column medium-6" style="text-align: right">
+                  <a role="button" class="button medium blue application-signout" style="margin-bottom: 0px">Sign Out</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="" class="bg-dkgrey lg utility-collapse-top startup-cta flexible-content-section-1 application" style="display: none;">
+      <div class="row">
+        <div class="columns">
+          <form id="edu-application" name="edu-application">
+            <div class="row" style="margin-top: 30px;" data-equalizer="">
+              <div class="column medium-6">
+                <div class="startup-cta__box" data-equalizer-watch="">
+                  <h2 class="subheader blue lg bold">About Your School</h2>
+                  <div class="row">
+                    <div class="small-12 columns">
+                      <div class="row">
+                        <div class="small-4 columns">
+                          <label for="school-name" class="right inline">School *</label>
+                        </div>
+                        <div class="small-8 columns">
+                          <input type="text" id="school-name" name="school-name" placeholder="" required="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="small-12 columns">
+                      <div class="row">
+                        <div class="small-4 columns">
+                          <label for="campus-location" class="right inline"> Main Campus Location *</label>
+                        </div>
+                        <div class="small-8 columns">
+                          <input type="text" id="campus-location" name="campus-location" placeholder="(City, Province, Country)" required="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="small-12 columns">
+                      <div class="row">
+                        <div class="small-4 columns">
+                          <label for="school-url" class="right inline">School Website</label>
+                        </div>
+                        <div class="small-8 columns">
+                          <input type="text" id="school-url" name="school-url" placeholder="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="column medium-6">
+                <div class="startup-cta__box" data-equalizer-watch="">
+                  <h2 class="subheader blue lg bold">About You</h2>
+                  <div class="row">
+                    <div class="small-12 columns">
+                      <div class="row">
+                        <div class="small-4 columns">
+                          <label for="first-name" class="right inline">First Name *</label>
+                        </div>
+                        <div class="small-8 columns">
+                          <input type="text" id="first-name" name="first-name" placeholder="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="small-12 columns">
+                      <div class="row">
+                        <div class="small-4 columns">
+                          <label for="last-name" class="right inline">Last Name *</label>
+                        </div>
+                        <div class="small-8 columns">
+                          <input type="text" id="last-name" name="last-name" placeholder="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="small-12 columns">
+                      <div class="row">
+                        <div class="small-4 columns">
+                          <label for="email" class="right inline">Email *</label>
+                        </div>
+                        <div class="small-8 columns">
+                          <input type="text" id="email" name="email" placeholder="" required="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="small-12 columns">
+                      <div class="row">
+                        <div class="small-4 columns">
+                          <label for="applicant-dept" class="right inline">Department or Area *</label>
+                        </div>
+                        <div class="small-8 columns">
+                          <input type="text" id="applicant-dept" name="applicant-dept" placeholder="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="small-12 columns">
+                      <div class="row">
+                        <div class="small-4 columns">
+                          <label for="applicant-location" class="right inline">Your Class Location (if not on main campus)</label>
+                        </div>
+                        <div class="small-8 columns">
+                          <input type="text" id="applicant-location" name="applicant-location" placeholder="(City, Province, Country)">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 30px;" data-equalizer="">
+              <div class="column medium-12">
+                <div class="startup-cta__box" data-equalizer-watch="">
+                  <h2 class="subheader blue lg bold">Application</h2>
+                  <div class="row">
+                    <div class="small-12 columns">
+                      <div class="row">
+                        <div class="small-12 columns">
+                          <div class="row">
+                            <div class="small-4 columns">
+                              <label for="edu-type" class="right inline">What type of education does your school provide? *</label>
+                            </div>
+                            <div class="small-8 columns">
+                              <select id="edu-type" name="edu-type" required="">
+                                <option value="" disabled selected>
+                                  (Select)
+                                </option>
+                                <option value="K.12">
+                                  K-12
+                                </option>
+                                <option value="college">
+                                  College (associate's degree or certificate equivalent)
+                                </option>
+                                <option value="university">
+                                  University (Bachelor's, Master's, Doctorate equivalent)
+                                </option>
+                                <option value="other">
+                                  Other
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="small-12 columns">
+                          <div class="row">
+                            <div class="small-4 columns">
+                              <label for="neo4j-aware" class="right inline">How did you hear about Neo4j? *</label>
+                            </div>
+                            <div class="small-8 columns">
+                              <select id="neo4j-aware" name="neo4j-aware" required="">
+                                <option value="" disabled selected>
+                                  (Select)
+                                </option>
+                                <option value="colleague">
+                                  From a colleague or friend
+                                </option>
+                                <option value="social">
+                                  Through social media
+                                </option>
+                                <option value="learning">
+                                  Through research, reading, online content
+                                </option>
+                                <option value="neo4j">
+                                  From Neo4j materials (website, training, blogs, etc)
+                                </option>
+                                <option value="events">
+                                  Through events - conferences, meetups, webinars, and more
+                                </option>
+                                <option value="other">
+                                  Other
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="small-12 columns">
+                          <div class="row">
+                            <div class="small-4 columns">
+                              <label for="student-studies" class="right inline">What are the common areas of study for students in your class(es)?</label>
+                            </div>
+                            <div class="small-8 columns" id="student-studies" name="student-studies">
+                              <input type="checkbox" id="developer" name="developer" value="developer">Software developer/engineer</input>
+                              <input type="checkbox" id="analyst" name="analyst" value="analyst">Data or Business analyst</input>
+                              <input type="checkbox" id="scientist" name="scientist" value="scientist">Data scientist</input>
+                              <input type="checkbox" id="architect" name="architect" value="architect">Architect</input>
+                              <input type="checkbox" id="ops-admin" name="ops-admin" value="ops-admin">Operations / Administration</input>
+                              <input type="checkbox" id="other" name="other" value="other">Other</input>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="small-12 columns">
+                          <div class="row">
+                            <div class="small-4 columns">
+                              <label for="neo4j-classes" class="right inline">In what classes are you planning to teach Neo4j? (don't worry if plans change)</label>
+                            </div>
+                            <div class="small-8 columns">
+                              <textarea id="neo4j-classes" name="neo4j-classes" placeholder="(List possible classes)"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="small-12 columns">
+                          <div class="row">
+                            <div class="small-4 columns">
+                              <label for="student-number" class="right inline">How many total students would you estimate for your classes using Neo4j? (we realize actual attendance/registration will vary)</label>
+                            </div>
+                            <div class="small-8 columns">
+                              <select id="student-number" name="student-number" required="">
+                                <option value="" disabled selected>
+                                  (Select)
+                                </option>
+                                <option value="0.19">
+                                  Fewer than 20
+                                </option>
+                                <option value="20.59">
+                                  20 to 59
+                                </option>
+                                <option value="60.99">
+                                  60 to 99
+                                </option>
+                                <option value="100.plus">
+                                  100 or More
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 30px;" data-equalizer="">
+              <div class="column medium-12">
+                <div class="startup-cta__box" data-equalizer-watch="">
+                  <h2 class="subheader blue lg bold">Terms</h2>
+                  <div class="row">
+                    <div class="small-12 columns">
+                      Applicant agrees to use this license for non-commercial, educational purposes only. Enter <code>AGREE</code> in the following field:
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="column medium-3">
+                      <input type="text" id="terms-agree" name="terms-agree" required=""></input>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 30px;" data-equalizer="">
+              <div class="column medium-12">
+                <div class="startup-cta__box" data-equalizer-watch="">
+                  <h2 class="subheader blue lg bold">Submit Application</h2>
+                  <div class="row">
+                    <div class="small-6 columns">
+                      <button name="edu-application-button" id="edu-application-button">Submit Now</button><br>
+                      <p>* indicates a required field</p>
+                    </div>
+                    <div class="columns small-6" style="text-align: right">
+                      <a role="button" class="button medium blue application-signout" style="margin-bottom: 0px">Sign Out</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+    <section id="" class="bg-light lg flexible-content-section-2" style="display:none;">
+      <div class="row">
+        <div class="columns">
+          <header class="text-left">
+            <h2 class="section_title">Schools teaching Neo4j in the classroom:</h2>
+          </header>
+        </div>
+      </div>
+      <div class="row gallery-grid small-up-3 medium-up-5">
+        <div class="column column-block gallery-grid__item">
+          <div class="img_wrap"><img src="" alt=""></div>
+        </div>
+        <div class="column column-block gallery-grid__item">
+          <div class="img_wrap">
+            <a href="" target="_blank"><img src="" alt=""></a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="//js.maxmind.com/js/apis/geoip2/v2.1/geoip2.js" type="text/javascript"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script> 
+    <script src="//neo4jsandbox.com/js/jwt-decode.min.js"></script> <!-- parse params -->
+    <script src="//neo4jsandbox.com/js/parse-params.js"></script> <!-- load main app -->
+    <script src="{{js_location}}?versionId={{js_version}}">
+    <div class="entry-links"></div>
+  </article>
+</section><!-- #content -->
