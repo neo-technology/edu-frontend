@@ -208,26 +208,26 @@ $(document).ready(function() {
             $('.application').hide();
             $('.application-toggle').show();
             $('.loading-icon').hide();
-            // if (approvedApps > 0) {
-            //   getDownloads()
-            //     .done( function (data) {
-            //       var jsonData = JSON.parse(data);
-            //       var rowId = 0;
-            //       var insertAfter = 'available-downloads-list-header';
-            //       jsonData.forEach(function (download) {
-            //         var newListItem = $('#available-downloads-list-header').clone();
-            //         newListItem.attr('id', 'available-downloads-list-row' + rowId);
-            //         newListItem.find('.release-product').text('Neo4j Desktop');
-            //         newListItem.find('.release-date').html('<div style="width: 140px; text-align: right">' + download['release_date'] + '</div>');
-            //         newListItem.find('.release-version').text(download['desktop_version']);
-            //         newListItem.find('.download-link').html('<a target="_blank" href="https://neo4j.com/download/neo4j-desktop/?edition=desktop&flavour=windows&release=' + download['desktop_version'] + '">Windows</a>&nbsp;&nbsp; <a target="_blank" href="https://neo4j.com/download/neo4j-desktop/?edition=desktop&flavour=osx&release=' + download['desktop_version'] + '">macOS</a>&nbsp;&nbsp; <a target="_blank" href="https://neo4j.com/download/neo4j-desktop/?edition=desktop&flavour=linux&release=' + download['desktop_version'] + '">Linux</a>');
-            //         newListItem.insertAfter('#' + insertAfter);
-            //         insertAfter = 'available-downloads-list-row' + rowId;
-            //         rowId = rowId + 1;
-            //       });
-            //       $('.available-downloads').show(); 
-            //     } );
-            // }
+            if (approvedApps > 0) {
+              getDownloads()
+                .done( function (data) {
+                  var jsonData = JSON.parse(data);
+                  var rowId = 0;
+                  var insertAfter = 'available-downloads-list-header';
+                  jsonData.forEach(function (download) {
+                    var newListItem = $('#available-downloads-list-header').clone();
+                    newListItem.attr('id', 'available-downloads-list-row' + rowId);
+                    newListItem.find('.release-product').text('Neo4j Desktop');
+                    newListItem.find('.release-date').html('<div style="width: 140px; text-align: right">' + download['release_date'] + '</div>');
+                    newListItem.find('.release-version').text(download['desktop_version']);
+                    newListItem.find('.download-link').html('<a target="_blank" href="https://neo4j.com/download/neo4j-desktop/?edition=desktop&flavour=windows&release=' + download['desktop_version'] + '">Windows</a>&nbsp;&nbsp; <a target="_blank" href="https://neo4j.com/download/neo4j-desktop/?edition=desktop&flavour=osx&release=' + download['desktop_version'] + '">macOS</a>&nbsp;&nbsp; <a target="_blank" href="https://neo4j.com/download/neo4j-desktop/?edition=desktop&flavour=linux&release=' + download['desktop_version'] + '">Linux</a>');
+                    newListItem.insertAfter('#' + insertAfter);
+                    insertAfter = 'available-downloads-list-row' + rowId;
+                    rowId = rowId + 1;
+                  });
+                  $('.available-downloads').show(); 
+                } );
+            }
             Foundation.reInit('equalizer');
           } else {
             $('.pre-apply').show();
