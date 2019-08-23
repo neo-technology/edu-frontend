@@ -1,11 +1,10 @@
 from base64 import b64encode
 import json
-#import requests
+import requests
 import sys, getopt
 import os
 import boto3
 import flask
-import requests
 from flask import render_template
 
 fapp = flask.Flask('pub', template_folder='.')
