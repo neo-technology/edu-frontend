@@ -1,10 +1,11 @@
 from base64 import b64encode
 import json
-import requests
+#import requests
 import sys, getopt
 import os
 import boto3
 import flask
+import requests
 from flask import render_template
 
 fapp = flask.Flask('pub', template_folder='.')
@@ -36,12 +37,13 @@ def publish_app_js(stage):
 def get_latest_license(key):
   # Create an S3 client
   s3 = boto3.client('s3')
-  bucket = 'graphacademy.neo4j.com'
+  bucket = 'cdn.neo4jlabs.com'
   f = s3.head_object(Bucket=bucket, Key=key)
   return 'https://s3.amazonaws.com/%s/%s?versionId=%s' % (bucket, key, str(f['VersionId']))
 
 def get_latest_neo4j_inc_license():
-  return get_latest_license('neo4j-edu-licenses/neo4j-inc-edu-license.pdf')
+  #Note - fix this!
+  return get_latest_license('edu-program/neo4j-edu-licenses/test.pdf')
 
 '''
 Publish file to S3 and get version
