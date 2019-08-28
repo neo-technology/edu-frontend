@@ -27,8 +27,16 @@ var getTimeDiff = function(time1, time2) {
  */
 var postApplication = function() {
   /* Serialize data into JSON */
+  var checkboxes = [];
   var jsonData = $('#edu-application').serializeArray()
-    .reduce(function(a, x) { a[x.name] = x.value; return a; }, {});
+    .reduce(function(a, x) { 
+      if (x.name == "student-studies") {
+        a[x.name] = checkboxes;
+        checkboxes.push( x.value );
+      } else {
+        a[x.name] = x.value;
+      }
+      return a; }, {});
 
   /* Auth token */
   var id_token = Cookies.get("com.neo4j.accounts.idToken");
@@ -70,13 +78,13 @@ var getApplications = function() {
 /**
  * Get Neo4j versions to display in download 
  */
-// var getDownloads = function() {
-//   return $.ajax
-//   ({
-//     type: "GET",
-//     url: "/current-neo4j-versions/"
-//   });
-// }
+var getDownloads = function() {
+  return $.ajax
+  ({
+    type: "GET",
+    url: "/current-neo4j-versions/"
+  });
+}
 
 var qsmap = parseQueryString();
 var userInfo = Cookies.getJSON("com.neo4j.accounts.userInfo");
