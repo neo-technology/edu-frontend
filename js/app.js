@@ -78,13 +78,13 @@ var getApplications = function() {
 /**
  * Get Neo4j versions to display in download 
  */
-var getDownloads = function() {
-  return $.ajax
-  ({
-    type: "GET",
-    url: "/current-neo4j-versions/"
-  });
-}
+// var getDownloads = function() {
+//   return $.ajax
+//   ({
+//     type: "GET",
+//     url: "/current-neo4j-versions/"
+//   });
+// }
 
 var qsmap = parseQueryString();
 var userInfo = Cookies.getJSON("com.neo4j.accounts.userInfo");
@@ -194,9 +194,7 @@ $(document).ready(function() {
         if (data['applications'].length > 0) {
           var approvedApps = 0;
           data['applications'].forEach(function (app) {
-            //var d = new Date(app['created_timestamp']);
-            var newListItem = $('#existing-applications-list-header').clone();  
-            //newListItem.find('.app-date').text(d.toLocaleString().split(",")[0]);
+            var newListItem = $('#existing-applications-list-header').clone();
             newListItem.find('.app-date').text(truncateDateTime(app['created_date']));
             newListItem.find('.app-school-name').text(app['school_name']);
             newListItem.find('.app-status').text(app['status']);
@@ -217,24 +215,24 @@ $(document).ready(function() {
             $('.application-toggle').show();
             $('.loading-icon').hide();
             if (approvedApps > 0) {
-              getDownloads()
-                .done( function (data) {
-                  var jsonData = JSON.parse(data);
+              //getDownloadUrls()
+                //.done( function (data) {
+                  //var jsonData = JSON.parse(data);
                   var rowId = 0;
-                  var insertAfter = 'available-downloads-list-header';
-                  jsonData.forEach(function (download) {
+                  //var insertAfter = 'available-downloads-list-header';
+                  //jsonData.forEach(function (download) {
+                    downloads = data['downloadUrls']
                     var newListItem = $('#available-downloads-list-header').clone();
                     newListItem.attr('id', 'available-downloads-list-row' + rowId);
                     newListItem.find('.release-product').text('Neo4j Desktop');
-                    newListItem.find('.release-date').html('<div style="width: 140px; text-align: right">' + download['release_date'] + '</div>');
-                    newListItem.find('.release-version').text(download['desktop_version']);
-                    newListItem.find('.download-link').html('<a target="_blank" href="https://neo4j.com/download/neo4j-desktop/?edition=desktop&flavour=windows&release=' + download['desktop_version'] + '">Windows</a>&nbsp;&nbsp; <a target="_blank" href="https://neo4j.com/download/neo4j-desktop/?edition=desktop&flavour=osx&release=' + download['desktop_version'] + '">macOS</a>&nbsp;&nbsp; <a target="_blank" href="https://neo4j.com/download/neo4j-desktop/?edition=desktop&flavour=linux&release=' + download['desktop_version'] + '">Linux</a>');
-                    newListItem.insertAfter('#' + insertAfter);
-                    insertAfter = 'available-downloads-list-row' + rowId;
-                    rowId = rowId + 1;
-                  });
+                    newListItem.find('.release-version').text(downloads['version']);
+                    newListItem.find('.download-link').html('<a target="_blank" href="' + downloads['windows'] + '">Windows</a>&nbsp;&nbsp; <a target="_blank" href="' + downloads['mac'] + '">macOS</a>&nbsp;&nbsp; <a target="_blank" href="' + downloads['linux'] + '">Linux</a>');
+                    //newListItem.insertAfter('#' + insertAfter);
+                    //insertAfter = 'available-downloads-list-row' + rowId;
+                    //rowId = rowId + 1;
+                  //});
                   $('.available-downloads').show(); 
-                } );
+                //} );
             }
             Foundation.reInit('equalizer');
           } else {
