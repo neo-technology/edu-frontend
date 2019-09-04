@@ -52,8 +52,8 @@ def publish_view_license_js(stage):
   s3 = boto3.client('s3')
   with fapp.app_context():
     tmpl_vars = {'API_BASE_URL': API_BASE_URL[stage]}
-    rendered_content = render_template('js/view-license.js', **tmpl_vars)
-  f = s3.put_object(Body=bytes(rendered_content), Bucket='cdn.neo4jlabs.com', Key='edu-program/' + stage + '/view-license.js', ACL='public-read')
+    rendered_content = render_template('js/view-edu-license.js', **tmpl_vars)
+  f = s3.put_object(Body=bytes(rendered_content), Bucket='cdn.neo4jlabs.com', Key='edu-program/' + stage + '/view-edu-license.js', ACL='public-read')
   return f['VersionId']
 
 
@@ -81,7 +81,7 @@ def update_wordpress_page(pageId, content):
     # build response for update
     response['content'] = content
     headers['Content-Type'] = 'application/json'
-    print url
+    print(url)
     pr = requests.post(url, headers=headers, data=json.dumps(response))
 
     return pr.content
@@ -92,23 +92,24 @@ def main(argv):
   try:
      opts, args = getopt.getopt(argv,"h",['stage='])
   except getopt.GetoptError:
-     print 'publish.py --stage <stage>'
+     print('publish.py --stage <stage>')
      sys.exit(2)
   for opt, arg in opts:
      if opt == '-h':
-        print 'publish.py --stage <stage>'
+        print('publish.py --stage <stage>')
         sys.exit()
      elif opt in ("--stage"):
         stage = arg
-  print 'Stage is "%s"' % (stage)
+  print('Stage is "%s"' % (stage))
 
   if stage <> 'dev' and stage <> 'prod':
-    print "Stages 'prod' + 'dev' are only supported stages currently"
+    print("Stages 'prod' + 'dev' are only supported stages currently")
     sys.exit()
 
   if 'PUBLISH_DOCS_USERNAME' in os.environ and 'PUBLISH_DOCS_PASSWORD' in os.environ:
     # publish new JS
     appVersionId = publish_app_js(stage)
+    print(appVersionId)
     viewLicenseVersionId = publish_view_license_js(stage)
 
     # publish wordpress page, replacing version of JS with latest published
@@ -117,8 +118,8 @@ def main(argv):
       rendered_content = render_template('html/index.html', **tmpl_vars)
       pageContent = update_wordpress_page(LANDING_PAGE[stage], rendered_content)
 
-      tmpl_vars = {'js_location': 'https://cdn.neo4jlabs.com/edu-program/' + stage + '/view-license.js', 'js_version': viewLicenseVersionId}
-      rendered_content = render_template('html/view-license.html', **tmpl_vars)
+      tmpl_vars = {'js_location': 'https://cdn.neo4jlabs.com/edu-program/' + stage + '/view-edu-license.js', 'js_version': viewLicenseVersionId}
+      rendered_content = render_template('html/view-edu-license.html', **tmpl_vars)
       pageContent = update_wordpress_page(LICENSE_PAGE[stage], rendered_content)
   else:
     print "Environment variables for PUBLISH_DOCS_USERNAME and PUBLISH_DOCS_PASSWORD must be set"
