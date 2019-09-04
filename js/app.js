@@ -75,17 +75,6 @@ var getApplications = function() {
   });
 }
 
-/**
- * Get Neo4j versions to display in download 
- */
-// var getDownloads = function() {
-//   return $.ajax
-//   ({
-//     type: "GET",
-//     url: "/current-neo4j-versions/"
-//   });
-// }
-
 var qsmap = parseQueryString();
 var userInfo = Cookies.getJSON("com.neo4j.accounts.userInfo");
 var id_token = Cookies.get("com.neo4j.accounts.idToken");
@@ -215,24 +204,17 @@ $(document).ready(function() {
             $('.application-toggle').show();
             $('.loading-icon').hide();
             if (approvedApps > 0) {
-              //getDownloadUrls()
-                //.done( function (data) {
-                  //var jsonData = JSON.parse(data);
                   var rowId = 0;
-                  //var insertAfter = 'available-downloads-list-header';
-                  //jsonData.forEach(function (download) {
-                    downloads = data['downloadUrls']
+                  var insertAfter = 'available-downloads-list-header';
+                    var downloads = data['downloadUrls']
                     var newListItem = $('#available-downloads-list-header').clone();
                     newListItem.attr('id', 'available-downloads-list-row' + rowId);
                     newListItem.find('.release-product').text('Neo4j Desktop');
                     newListItem.find('.release-version').text(downloads['version']);
                     newListItem.find('.download-link').html('<a target="_blank" href="' + downloads['windows'] + '">Windows</a>&nbsp;&nbsp; <a target="_blank" href="' + downloads['mac'] + '">macOS</a>&nbsp;&nbsp; <a target="_blank" href="' + downloads['linux'] + '">Linux</a>');
-                    //newListItem.insertAfter('#' + insertAfter);
-                    //insertAfter = 'available-downloads-list-row' + rowId;
-                    //rowId = rowId + 1;
-                  //});
-                  $('.available-downloads').show(); 
-                //} );
+                    newListItem.insertAfter('#' + insertAfter);
+                    insertAfter = 'available-downloads-list-row' + rowId;
+                  $('.available-downloads').show();
             }
             Foundation.reInit('equalizer');
           } else {
