@@ -102,7 +102,7 @@ def main(argv):
         stage = arg
   print('Stage is "%s"' % (stage))
 
-  if stage <> 'dev' and stage <> 'prod':
+  if stage != 'dev' and stage != 'prod':
     print("Stages 'prod' + 'dev' are only supported stages currently")
     sys.exit()
 
