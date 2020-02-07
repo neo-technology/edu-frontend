@@ -69,7 +69,6 @@ Update wordpress page
 '''
 def update_wordpress_page(pageId, content):
     url = 'https://neo4j.com/wp-json/wp/v2/pages/%d' % (pageId)
-    #auth = b64encode('{}:{}'.format(os.getenv('PUBLISH_DOCS_USERNAME'), os.getenv('PUBLISH_DOCS_PASSWORD')))
     auth = '{}:{}'.format(os.getenv('PUBLISH_DOCS_USERNAME'), os.getenv('PUBLISH_DOCS_PASSWORD')).encode()
     headers = {
         'Accept': 'application/json',
