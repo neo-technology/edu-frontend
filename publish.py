@@ -30,7 +30,7 @@ def publish_app_js(stage):
   with fapp.app_context():
     tmpl_vars = {'API_BASE_URL': API_BASE_URL[stage]}
     rendered_content = render_template('js/app.js', **tmpl_vars)
-  f = s3.put_object(Body=bytes(rendered_content), Bucket='cdn.neo4jlabs.com', Key='edu-program/' + stage + '/app.js', ACL='public-read')
+  f = s3.put_object(Body=bytes(rendered_content, encoding='utf-8'), Bucket='cdn.neo4jlabs.com', Key='edu-program/' + stage + '/app.js', ACL='public-read')
   return f['VersionId']
 
 def get_latest_license(key):
@@ -53,7 +53,7 @@ def publish_view_license_js(stage):
   with fapp.app_context():
     tmpl_vars = {'API_BASE_URL': API_BASE_URL[stage]}
     rendered_content = render_template('js/view-edu-license.js', **tmpl_vars)
-  f = s3.put_object(Body=bytes(rendered_content), Bucket='cdn.neo4jlabs.com', Key='edu-program/' + stage + '/view-edu-license.js', ACL='public-read')
+  f = s3.put_object(Body=bytes(rendered_content, encoding='utf-8'), Bucket='cdn.neo4jlabs.com', Key='edu-program/' + stage + '/view-edu-license.js', ACL='public-read')
   return f['VersionId']
 
 
@@ -69,7 +69,8 @@ Update wordpress page
 '''
 def update_wordpress_page(pageId, content):
     url = 'https://neo4j.com/wp-json/wp/v2/pages/%d' % (pageId)
-    auth = b64encode('{}:{}'.format(os.getenv('PUBLISH_DOCS_USERNAME'), os.getenv('PUBLISH_DOCS_PASSWORD')))
+    #auth = b64encode('{}:{}'.format(os.getenv('PUBLISH_DOCS_USERNAME'), os.getenv('PUBLISH_DOCS_PASSWORD')))
+    auth = '{}:{}'.format(os.getenv('PUBLISH_DOCS_USERNAME'), os.getenv('PUBLISH_DOCS_PASSWORD')).encode()
     headers = {
         'Accept': 'application/json',
         'Authorization': 'Basic {}'.format(auth),
@@ -122,7 +123,7 @@ def main(argv):
       rendered_content = render_template('html/view-edu-license.html', **tmpl_vars)
       pageContent = update_wordpress_page(LICENSE_PAGE[stage], rendered_content)
   else:
-    print "Environment variables for PUBLISH_DOCS_USERNAME and PUBLISH_DOCS_PASSWORD must be set"
+    print("Environment variables for PUBLISH_DOCS_USERNAME and PUBLISH_DOCS_PASSWORD must be set")
     sys.exit()
 
 if __name__ == "__main__":
