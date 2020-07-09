@@ -1,104 +1,84 @@
+import { WebAuth } from 'auth0-js'
+
 Sentry.init({ dsn: 'https://9a2dd82a420e4115aca3cc605e6131f7@sentry.io/1385360' });
 
-var country = null;
-var state = null;
-var continent = null;
+window._eduProgram = {};
 
-var API_BASE_URL = "{{API_BASE_URL}}";
+const auth = new WebAuth({
+  clientID: 'hoNo6B00ckfAoFVzPTqzgBIJHFHDnHYu',
+  domain: 'login.neo4j.com',
+  redirectUri: `${window.location.origin}/accounts/login`,
+  audience: 'neo4j://accountinfo/',
+  scope: 'read:account-info openid email profile user_metadata',
+  responseType: 'token id_token'
+})
 
-var truncateDateTime = function(dateTimeStr) {
+const API_BASE_URL = "{{API_BASE_URL}}";
+
+const truncateDateTime = function (dateTimeStr) {
   if (typeof dateTimeStr == 'string') {
-    return dateTimeStr.substring(0,10); 
+    return dateTimeStr.substring(0, 10);
   } else {
     return dateTimeStr;
   }
 }
 
-var getTimeDiff = function(time1, time2) {
-  var hourDiff = time2 - time1;
-  var diffDays = Math.floor(hourDiff / 86400000);
-  var diffHrs = Math.floor((hourDiff % 86400000) / 3600000);
-  var diffMins = Math.floor(((hourDiff % 86400000) % 3600000) / 60000);
-  return {"days": diffDays, "hours": diffHrs, "mins": diffMins};
-}
-
 /**
  * Post application in current form (id: edu-application)
  */
-var postApplication = function() {
+const postApplication = function () {
+  const accessToken = window._eduProgram.accessToken;
+
   /* Serialize data into JSON */
-  var checkboxes = [];
-  var jsonData = $('#edu-application').serializeArray()
-    .reduce(function(a, x) { 
+  const checkboxes = [];
+  const jsonData = $('#edu-application').serializeArray()
+    .reduce(function (a, x) {
       if (x.name == "student-studies") {
         a[x.name] = checkboxes;
-        checkboxes.push( x.value );
+        checkboxes.push(x.value);
       } else {
         a[x.name] = x.value;
       }
-      return a; }, {});
-
-  /* Auth token */
-  var id_token = Cookies.get("com.neo4j.accounts.idToken");
+      return a;
+    }, {});
 
   /* Return ajax for callback chaining */
   return $.ajax
-  ({
-    type: "POST",
-    url: API_BASE_URL + "apply",
-    contentType: "application/json",
-    dataType: 'json',
-    async: true,
-    data: JSON.stringify(jsonData),
-    headers: {
-       "Authorization": id_token
-    }
-  });
+    ({
+      type: "POST",
+      url: API_BASE_URL + "apply",
+      contentType: "application/json",
+      dataType: 'json',
+      async: true,
+      data: JSON.stringify(jsonData),
+      headers: {
+        "Authorization": accessToken
+      }
+    });
 }
 
 /**
  * Get applications previously submitted by current user
  */
-var getApplications = function() {
-  /* Auth token */
-  var id_token = Cookies.get("com.neo4j.accounts.idToken");
-
+const getApplications = function (accessToken) {
   /* Return ajax for callback chaining */
   return $.ajax
-  ({
-    type: "GET",
-    url: API_BASE_URL + 'getApplications',
-    async: true,
-    headers: {
-       "Authorization": id_token
-    }
-  });
+    ({
+      type: "GET",
+      url: API_BASE_URL + 'getApplications',
+      async: true,
+      headers: {
+        "Authorization": accessToken
+      }
+    });
 }
 
-var qsmap = parseQueryString();
-var userInfo = Cookies.getJSON("com.neo4j.accounts.userInfo");
-var id_token = Cookies.get("com.neo4j.accounts.idToken");
-var id_token_expired = true;
 
-var expiresIn = null;
-if (id_token) {
-  expiresIn = getTimeDiff(Date.now(), (jwt_decode(id_token).exp) * 1000); 
-  if ( (expiresIn.days > 0) || (expiresIn.hours > 0) || (expiresIn.mins > 0)) {
-    id_token_expired = false;
-  }  else {
-    id_token_expired = true;
-  } 
-}
-
-if (!userInfo || !id_token || id_token_expired) {
-  $('.pre-apply').show();
-}
-
-$(document).ready(function() {  
+$(document).ready(function () {
   Foundation.reInit('equalizer');
 
-  $.validator.methods.agree = function( value, element ) {
-    return this.optional( element ) || /^AGREE$/.test( value );
+  $.validator.methods.agree = function (value, element) {
+    return this.optional(element) || /^AGREE$/.test(value);
   }
 
 
@@ -110,59 +90,59 @@ $(document).ready(function() {
     messages: {
       "terms-agree": "You must type AGREE in this field to agree to terms"
     },
-    submitHandler: function(form) {
+    submitHandler: function (form) {
       /* TODO move into success and failure cases */
       postApplication()
-      .fail( function (jqXHR, textStatus, errorThrown) {
-        alert("Failed submitting application. (" + jqXHR.statusText + "). Contact edu@neo4j.com if this problem persists.");
-      })
-      .done(
-        function(data) {
-          $('.pre-apply').hide();
-          $('.application').hide();
-          $('#application-id').text( "Application ID: " + data['application-id'] );
-          document.body.scrollTop = document.documentElement.scrollTop = 0;
-          $('#load-edu-home-button').click(
-            function() {
-              window.location.reload(true);
-              return false;
-            }
-          )
-          $('.post-apply').show();
-          $('.available-downloads').hide(); 
-          $('.existing-applications').hide();
-        }
-      ); 
+        .fail(function (jqXHR, textStatus, errorThrown) {
+          alert("Failed submitting application. (" + jqXHR.statusText + "). Contact edu@neo4j.com if this problem persists.");
+        })
+        .done(
+          function (data) {
+            $('.pre-apply').hide();
+            $('.application').hide();
+            $('#application-id').text("Application ID: " + data['application-id']);
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+            $('#load-edu-home-button').click(
+              function () {
+                window.location.reload(true);
+                return false;
+              }
+            )
+            $('.post-apply').show();
+            $('.available-downloads').hide();
+            $('.existing-applications').hide();
+          }
+        );
     }
   });
 
   /* Register button to submit form */
-  $('#edu-application-button').click( 
-    function() {
+  $('#edu-application-button').click(
+    function () {
       $("#edu-application").submit();
       return false;
     }
   );
 
   /* Register button to sign in*/
-  $('#application-signin').click( 
-    function() {
+  $('#application-signin').click(
+    function () {
       currentLocation = [location.protocol, '//', location.host, location.pathname].join('');
-      window.location = 'https://neo4j.com/accounts/login/?targetUrl=' + encodeURI(currentLocation + '?action=continue');
+      window.location = 'https://neo4j.com/accounts-b/?targetUrl=' + encodeURI(currentLocation + '?action=continue');
       return false;
     }
   );
 
   /* Register button to sign out*/
-  $('.application-signout').click( 
-    function() {
+  $('.application-signout').click(
+    function () {
       window.location = 'https://neo4j.com/accounts/logout/?targetUrl=' + encodeURI(window.location);
       return false;
     }
   );
 
-  $('#application-toggle-button').click( 
-    function() {
+  $('#application-toggle-button').click(
+    function () {
       $('.pre-apply').hide();
       $('.post-apply').hide();
       $('.application').show();
@@ -172,80 +152,96 @@ $(document).ready(function() {
   );
 
 
-  if (userInfo && id_token && !id_token_expired) {
-    $('.pre-apply').hide();
-    $('.loading-icon').show();
-    getApplications()
-      .fail( function (jqXHR, textStatus, errorThrown) {
-        alert("Failed retrieving existing apps. (" + jqXHR.statusText + "). Contact edu@neo4j.com if this persists.");
-      })
-      .done( function (data) {
-        if (data['applications'].length > 0) {
-          var approvedApps = 0;
-          data['applications'].forEach(function (app) {
-            var newListItem = $('#existing-applications-list-header').clone();
-            newListItem.find('.app-date').text(truncateDateTime(app['created_date']));
-            newListItem.find('.app-school-name').text(app['school_name']);
-            newListItem.find('.app-status').text(app['status']);
-            newListItem.find('.app-licenses').text('');
-            newListItem.find('.license-expires').text(truncateDateTime(app['expires_date']));
-            for (keyid in app['license_keys']) {
-              key = app['license_keys'][keyid];
-              newListItem.find('.app-licenses').append('<a target="_blank" href="view-edu-license?date=' + key['license_date'] + '&feature=' + key['licensed_feature'] + '">' + key['licensed_feature'].replace('neo4j-', '') + '</a> &nbsp;');
+  auth.checkSession({}, (err, result) => {
+    console.log(err, result);
+
+    try {
+      if (err) {
+        $('.pre-apply').show();
+        $('.application').hide();
+        $('.loading-icon').hide();
+        Foundation.reInit('equalizer');
+        return;
+      }
+
+      const accessToken = result.idToken;
+      const userProfile = result.idTokenPayload;
+
+      window._eduProgram.accessToken = accessToken;
+
+      $('.pre-apply').hide();
+      $('.loading-icon').show();
+      getApplications(accessToken)
+        .fail(function (jqXHR, textStatus, errorThrown) {
+          alert("Failed retrieving existing apps. (" + jqXHR.statusText + "). Contact edu@neo4j.com if this persists.");
+        })
+        .done(function (data) {
+          if (data['applications'].length > 0) {
+            const approvedApps = 0;
+            data['applications'].forEach(function (app) {
+              const newListItem = $('#existing-applications-list-header').clone();
+              newListItem.find('.app-date').text(truncateDateTime(app['created_date']));
+              newListItem.find('.app-school-name').text(app['school_name']);
+              newListItem.find('.app-status').text(app['status']);
+              newListItem.find('.app-licenses').text('');
+              newListItem.find('.license-expires').text(truncateDateTime(app['expires_date']));
+              for (keyid in app['license_keys']) {
+                key = app['license_keys'][keyid];
+                newListItem.find('.app-licenses').append('<a target="_blank" href="view-edu-license?date=' + key['license_date'] + '&feature=' + key['licensed_feature'] + '">' + key['licensed_feature'].replace('neo4j-', '') + '</a> &nbsp;');
+              }
+              newListItem.insertAfter('#existing-applications-list-header');
+              if (app['status'] == 'APPROVED') {
+                approvedApps = approvedApps + 1;
+              }
+            });
+            if (accessToken) {
+              $('.existing-applications').show();
+              $('.application').hide();
+              $('.application-toggle').show();
+              $('.loading-icon').hide();
+              if (approvedApps > 0) {
+                const rowId = 0;
+                const insertAfter = 'available-downloads-list-header';
+                const downloads = data['downloadUrls']
+                const newListItem = $('#available-downloads-list-header').clone();
+                newListItem.attr('id', 'available-downloads-list-row' + rowId);
+                newListItem.find('.release-product').text('Neo4j Desktop');
+                newListItem.find('.release-version').text(downloads['version']);
+                newListItem.find('.download-link').html('<a target="_blank" href="' + downloads['windows'] + '">Windows</a>&nbsp;&nbsp; <a target="_blank" href="' + downloads['mac'] + '">macOS</a>&nbsp;&nbsp; <a target="_blank" href="' + downloads['linux'] + '">Linux</a>');
+                newListItem.insertAfter('#' + insertAfter);
+                insertAfter = 'available-downloads-list-row' + rowId;
+                $('.available-downloads').show();
+              }
+              Foundation.reInit('equalizer');
+            } else {
+              $('.pre-apply').show();
+              $('.application').hide();
+              $('.loading-icon').hide();
+              Foundation.reInit('equalizer');
             }
-            newListItem.insertAfter('#existing-applications-list-header');
-            if (app['status'] == 'APPROVED') {
-              approvedApps = approvedApps + 1;
+          } else if (data['applications'].length == 0) {
+            if (accessToken) {
+              $('.existing-applications').hide();
+              $('.application').show();
+              $('.loading-icon').hide();
+              Foundation.reInit('equalizer');
+            } else {
+              $('.pre-apply').show();
+              $('.loading-icon').hide();
+              $('.application').hide();
+              Foundation.reInit('equalizer');
             }
-          });
-          if ('action' in qsmap && qsmap['action'][0] == 'continue') {
-            $('.existing-applications').show();
-            $('.application').hide();
-            $('.application-toggle').show();
-            $('.loading-icon').hide();
-            if (approvedApps > 0) {
-                  var rowId = 0;
-                  var insertAfter = 'available-downloads-list-header';
-                    var downloads = data['downloadUrls']
-                    var newListItem = $('#available-downloads-list-header').clone();
-                    newListItem.attr('id', 'available-downloads-list-row' + rowId);
-                    newListItem.find('.release-product').text('Neo4j Desktop');
-                    newListItem.find('.release-version').text(downloads['version']);
-                    newListItem.find('.download-link').html('<a target="_blank" href="' + downloads['windows'] + '">Windows</a>&nbsp;&nbsp; <a target="_blank" href="' + downloads['mac'] + '">macOS</a>&nbsp;&nbsp; <a target="_blank" href="' + downloads['linux'] + '">Linux</a>');
-                    newListItem.insertAfter('#' + insertAfter);
-                    insertAfter = 'available-downloads-list-row' + rowId;
-                  $('.available-downloads').show();
-            }
-            Foundation.reInit('equalizer');
-          } else {
-            $('.pre-apply').show();
-            $('.application').hide();
-            $('.loading-icon').hide();
-            Foundation.reInit('equalizer');
-          }
-        } else if (data['applications'].length == 0) {
-          if ('action' in qsmap && qsmap['action'][0] == 'continue') {
-            $('.existing-applications').hide();
-            $('.application').show();
-            $('.loading-icon').hide();
-            Foundation.reInit('equalizer');
-          } else {
-            $('.pre-apply').show();
-            $('.loading-icon').hide();
-            $('.application').hide();
-            Foundation.reInit('equalizer');
           }
         }
-      }
-    );
-    $('#first-name').val( userInfo.given_name );
-    $('#last-name').val( userInfo.family_name );
-    $('#email').val( userInfo.email );
-  } else {
-    $('.pre-apply').show();
-    $('.application').hide();
-    $('.loading-icon').hide();
-    Foundation.reInit('equalizer');
-  }
+        );
+      $('#first-name').val(userProfile.given_name);
+      $('#last-name').val(userProfile.family_name);
+      $('#email').val(userProfile.email);
+
+    } catch (e) {
+      console.log(e);
+    }
+
+  });
 
 }); // end document.ready() handler

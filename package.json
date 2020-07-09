@@ -1,0 +1,35 @@
+{
+  "name": "edu-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js",
+    "publish": "npm run build && python publish.py",
+    "publish-prod": "npm run build && python publish.py --stage prod"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neo-technology/edu-frontend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neo-technology/edu-frontend/issues"
+  },
+  "homepage": "https://github.com/neo-technology/edu-frontend#readme",
+  "devDependencies": {
+    "@babel/core": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.1.0",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  },
+  "dependencies": {
+    "auth0-js": "^9.13.2"
+  }
+}
