@@ -185,8 +185,8 @@ $(document).ready(function () {
               newListItem.find('.app-status').text(app['status']);
               newListItem.find('.app-licenses').text('');
               newListItem.find('.license-expires').text(truncateDateTime(app['expires_date']));
-              for (keyid in app['license_keys']) {
-                key = app['license_keys'][keyid];
+              for (let keyid in app['license_keys']) {
+                let key = app['license_keys'][keyid];
                 newListItem.find('.app-licenses').append('<a target="_blank" href="view-edu-license?date=' + key['license_date'] + '&feature=' + key['licensed_feature'] + '">' + key['licensed_feature'].replace('neo4j-', '') + '</a> &nbsp;');
               }
               newListItem.insertAfter('#existing-applications-list-header');
