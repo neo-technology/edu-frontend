@@ -4,7 +4,7 @@ Sentry.init({ dsn: 'https://9a2dd82a420e4115aca3cc605e6131f7@sentry.io/1385360' 
 
 window._eduProgram = {};
 
-const auth = new WebAuth({
+let auth = new WebAuth({
   clientID: 'hoNo6B00ckfAoFVzPTqzgBIJHFHDnHYu',
   domain: 'login.neo4j.com',
   redirectUri: `${window.location.origin}/accounts/login`,
@@ -13,9 +13,9 @@ const auth = new WebAuth({
   responseType: 'token id_token'
 })
 
-const API_BASE_URL = "{{API_BASE_URL}}";
+let API_BASE_URL = "{{API_BASE_URL}}";
 
-const truncateDateTime = function (dateTimeStr) {
+let truncateDateTime = function (dateTimeStr) {
   if (typeof dateTimeStr == 'string') {
     return dateTimeStr.substring(0, 10);
   } else {
@@ -26,12 +26,12 @@ const truncateDateTime = function (dateTimeStr) {
 /**
  * Post application in current form (id: edu-application)
  */
-const postApplication = function () {
-  const accessToken = window._eduProgram.accessToken;
+let postApplication = function () {
+  let accessToken = window._eduProgram.accessToken;
 
   /* Serialize data into JSON */
-  const checkboxes = [];
-  const jsonData = $('#edu-application').serializeArray()
+  let checkboxes = [];
+  let jsonData = $('#edu-application').serializeArray()
     .reduce(function (a, x) {
       if (x.name == "student-studies") {
         a[x.name] = checkboxes;
@@ -60,7 +60,7 @@ const postApplication = function () {
 /**
  * Get applications previously submitted by current user
  */
-const getApplications = function (accessToken) {
+let getApplications = function (accessToken) {
   /* Return ajax for callback chaining */
   return $.ajax
     ({
@@ -127,8 +127,8 @@ $(document).ready(function () {
   /* Register button to sign in*/
   $('#application-signin').click(
     function () {
-      currentLocation = [location.protocol, '//', location.host, location.pathname].join('');
-      window.location = 'https://neo4j.com/accounts-b/?targetUrl=' + encodeURI(currentLocation + '?action=continue');
+      const currentLocation = [location.protocol, '//', location.host, location.pathname].join('');
+      window.location = 'https://neo4j.com/accounts/login-b/?targetUrl=' + encodeURI(currentLocation + '?action=continue');
       return false;
     }
   );
@@ -164,8 +164,8 @@ $(document).ready(function () {
         return;
       }
 
-      const accessToken = result.idToken;
-      const userProfile = result.idTokenPayload;
+      let accessToken = result.idToken;
+      let userProfile = result.idTokenPayload;
 
       window._eduProgram.accessToken = accessToken;
 
@@ -177,9 +177,9 @@ $(document).ready(function () {
         })
         .done(function (data) {
           if (data['applications'].length > 0) {
-            const approvedApps = 0;
+            let approvedApps = 0;
             data['applications'].forEach(function (app) {
-              const newListItem = $('#existing-applications-list-header').clone();
+              let newListItem = $('#existing-applications-list-header').clone();
               newListItem.find('.app-date').text(truncateDateTime(app['created_date']));
               newListItem.find('.app-school-name').text(app['school_name']);
               newListItem.find('.app-status').text(app['status']);
@@ -200,10 +200,10 @@ $(document).ready(function () {
               $('.application-toggle').show();
               $('.loading-icon').hide();
               if (approvedApps > 0) {
-                const rowId = 0;
-                const insertAfter = 'available-downloads-list-header';
-                const downloads = data['downloadUrls']
-                const newListItem = $('#available-downloads-list-header').clone();
+                let rowId = 0;
+                let insertAfter = 'available-downloads-list-header';
+                let downloads = data['downloadUrls']
+                let newListItem = $('#available-downloads-list-header').clone();
                 newListItem.attr('id', 'available-downloads-list-row' + rowId);
                 newListItem.find('.release-product').text('Neo4j Desktop');
                 newListItem.find('.release-version').text(downloads['version']);
