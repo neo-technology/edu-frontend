@@ -153,8 +153,6 @@ $(document).ready(function () {
 
 
   auth.checkSession({}, (err, result) => {
-    console.log(err, result);
-
     try {
       if (err) {
         $('.pre-apply').show();
