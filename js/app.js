@@ -60,7 +60,7 @@ const postApplication = function () {
 /**
  * Get applications previously submitted by current user
  */
-const getApplications = function (accessToken) {
+let getApplications = function (accessToken) {
   /* Return ajax for callback chaining */
   return $.ajax
     ({
@@ -127,8 +127,8 @@ $(document).ready(function () {
   /* Register button to sign in*/
   $('#application-signin').click(
     function () {
-      currentLocation = [location.protocol, '//', location.host, location.pathname].join('');
-      window.location = 'https://neo4j.com/accounts-b/?targetUrl=' + encodeURI(currentLocation + '?action=continue');
+      const currentLocation = [location.protocol, '//', location.host, location.pathname].join('');
+      window.location = 'https://neo4j.com/accounts/login-b/?targetUrl=' + encodeURI(currentLocation + '?action=continue');
       return false;
     }
   );
@@ -153,8 +153,6 @@ $(document).ready(function () {
 
 
   auth.checkSession({}, (err, result) => {
-    console.log(err, result);
-
     try {
       if (err) {
         $('.pre-apply').show();
@@ -177,16 +175,16 @@ $(document).ready(function () {
         })
         .done(function (data) {
           if (data['applications'].length > 0) {
-            const approvedApps = 0;
+            let approvedApps = 0;
             data['applications'].forEach(function (app) {
-              const newListItem = $('#existing-applications-list-header').clone();
+              let newListItem = $('#existing-applications-list-header').clone();
               newListItem.find('.app-date').text(truncateDateTime(app['created_date']));
               newListItem.find('.app-school-name').text(app['school_name']);
               newListItem.find('.app-status').text(app['status']);
               newListItem.find('.app-licenses').text('');
               newListItem.find('.license-expires').text(truncateDateTime(app['expires_date']));
-              for (keyid in app['license_keys']) {
-                key = app['license_keys'][keyid];
+              for (let keyid in app['license_keys']) {
+                const key = app['license_keys'][keyid];
                 newListItem.find('.app-licenses').append('<a target="_blank" href="view-edu-license?date=' + key['license_date'] + '&feature=' + key['licensed_feature'] + '">' + key['licensed_feature'].replace('neo4j-', '') + '</a> &nbsp;');
               }
               newListItem.insertAfter('#existing-applications-list-header');
@@ -201,9 +199,9 @@ $(document).ready(function () {
               $('.loading-icon').hide();
               if (approvedApps > 0) {
                 const rowId = 0;
-                const insertAfter = 'available-downloads-list-header';
+                let insertAfter = 'available-downloads-list-header';
                 const downloads = data['downloadUrls']
-                const newListItem = $('#available-downloads-list-header').clone();
+                let newListItem = $('#available-downloads-list-header').clone();
                 newListItem.attr('id', 'available-downloads-list-row' + rowId);
                 newListItem.find('.release-product').text('Neo4j Desktop');
                 newListItem.find('.release-version').text(downloads['version']);
