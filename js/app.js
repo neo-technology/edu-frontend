@@ -4,7 +4,7 @@ Sentry.init({ dsn: 'https://9a2dd82a420e4115aca3cc605e6131f7@sentry.io/1385360' 
 
 window._eduProgram = {};
 
-let auth = new WebAuth({
+const auth = new WebAuth({
   clientID: 'hoNo6B00ckfAoFVzPTqzgBIJHFHDnHYu',
   domain: 'login.neo4j.com',
   redirectUri: `${window.location.origin}/accounts/login`,
@@ -13,9 +13,9 @@ let auth = new WebAuth({
   responseType: 'token id_token'
 })
 
-let API_BASE_URL = "{{API_BASE_URL}}";
+const API_BASE_URL = "{{API_BASE_URL}}";
 
-let truncateDateTime = function (dateTimeStr) {
+const truncateDateTime = function (dateTimeStr) {
   if (typeof dateTimeStr == 'string') {
     return dateTimeStr.substring(0, 10);
   } else {
@@ -26,12 +26,12 @@ let truncateDateTime = function (dateTimeStr) {
 /**
  * Post application in current form (id: edu-application)
  */
-let postApplication = function () {
-  let accessToken = window._eduProgram.accessToken;
+const postApplication = function () {
+  const accessToken = window._eduProgram.accessToken;
 
   /* Serialize data into JSON */
-  let checkboxes = [];
-  let jsonData = $('#edu-application').serializeArray()
+  const checkboxes = [];
+  const jsonData = $('#edu-application').serializeArray()
     .reduce(function (a, x) {
       if (x.name == "student-studies") {
         a[x.name] = checkboxes;
@@ -164,8 +164,8 @@ $(document).ready(function () {
         return;
       }
 
-      let accessToken = result.idToken;
-      let userProfile = result.idTokenPayload;
+      const accessToken = result.idToken;
+      const userProfile = result.idTokenPayload;
 
       window._eduProgram.accessToken = accessToken;
 
@@ -186,7 +186,7 @@ $(document).ready(function () {
               newListItem.find('.app-licenses').text('');
               newListItem.find('.license-expires').text(truncateDateTime(app['expires_date']));
               for (let keyid in app['license_keys']) {
-                let key = app['license_keys'][keyid];
+                const key = app['license_keys'][keyid];
                 newListItem.find('.app-licenses').append('<a target="_blank" href="view-edu-license?date=' + key['license_date'] + '&feature=' + key['licensed_feature'] + '">' + key['licensed_feature'].replace('neo4j-', '') + '</a> &nbsp;');
               }
               newListItem.insertAfter('#existing-applications-list-header');
@@ -200,9 +200,9 @@ $(document).ready(function () {
               $('.application-toggle').show();
               $('.loading-icon').hide();
               if (approvedApps > 0) {
-                let rowId = 0;
+                const rowId = 0;
                 let insertAfter = 'available-downloads-list-header';
-                let downloads = data['downloadUrls']
+                const downloads = data['downloadUrls']
                 let newListItem = $('#available-downloads-list-header').clone();
                 newListItem.attr('id', 'available-downloads-list-row' + rowId);
                 newListItem.find('.release-product').text('Neo4j Desktop');
