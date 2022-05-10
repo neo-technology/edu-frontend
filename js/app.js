@@ -1,6 +1,6 @@
 import { WebAuth } from 'auth0-js'
 
-Sentry.init({ dsn: 'https://9a2dd82a420e4115aca3cc605e6131f7@sentry.io/1385360' });
+if (window.Sentry) Sentry.init({ dsn: 'https://9a2dd82a420e4115aca3cc605e6131f7@sentry.io/1385360' });
 
 window._eduProgram = {};
 
