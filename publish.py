@@ -31,7 +31,7 @@ def publish_app_js(stage):
     tmpl_vars = {'API_BASE_URL': API_BASE_URL[stage]}
     rendered_content = render_template('dist/app.js', **tmpl_vars)
     rendered_content = rendered_content.encode('ascii', 'ignore')
-  f = s3.put_object(Body=bytes(rendered_content), Bucket='cdn.neo4jlabs.com', Key='edu-program/' + stage + '/app.js', ACL='public-read')
+  f = s3.put_object(Body=bytes(rendered_content), Bucket='cdn.neo4jlabs.com', Key='edu-program/' + stage + '/app.js', ACL='public-read', ContentType='text/javascript')
   return f['VersionId']
 
 def get_latest_license(key):
@@ -55,7 +55,7 @@ def publish_view_license_js(stage):
     tmpl_vars = {'API_BASE_URL': API_BASE_URL[stage]}
     rendered_content = render_template('dist/license.js', **tmpl_vars)
     rendered_content = rendered_content.encode('ascii', 'ignore')
-  f = s3.put_object(Body=bytes(rendered_content), Bucket='cdn.neo4jlabs.com', Key='edu-program/' + stage + '/view-edu-license.js', ACL='public-read')
+  f = s3.put_object(Body=bytes(rendered_content), Bucket='cdn.neo4jlabs.com', Key='edu-program/' + stage + '/view-edu-license.js', ACL='public-read', ContentType='text/javascript')
   return f['VersionId']
 
 
