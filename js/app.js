@@ -34,13 +34,12 @@ const postApplication = function () {
   const jsonData = $('#edu-application').serializeArray()
     .reduce(function (a, x) {
       if (x.name == "student-studies") {
-        a[x.name] = checkboxes;
         checkboxes.push(x.value);
       } else {
         a[x.name] = x.value;
       }
       return a;
-    }, {});
+    }, {'student-studies': checkboxes});
 
   /* Return ajax for callback chaining */
   return $.ajax
