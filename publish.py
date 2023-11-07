@@ -5,6 +5,7 @@ import sys, getopt
 import os
 import boto3
 import flask
+import time
 from flask import render_template
 
 fapp = flask.Flask('pub', template_folder='.')
@@ -18,13 +19,16 @@ LANDING_PAGE = {"dev": 102247,
 LICENSE_PAGE = {"dev": 102275,
                 "prod": 102268}
 
+CDN_ID = 'E3TH8BIS4WNDD5'
+
 '''
 Publish file to S3 and get version
 '''
 def publish_app_js(stage):
   global API_BASE_URL
 
-  # Create an S3 client
+  # Create an S3 and CloudFront clients
+  cloudfront = boto3.client('cloudfront')
   s3 = boto3.client('s3')
 
   with fapp.app_context():
@@ -32,6 +36,16 @@ def publish_app_js(stage):
     rendered_content = render_template('dist/app.js', **tmpl_vars)
     rendered_content = rendered_content.encode('ascii', 'ignore')
   f = s3.put_object(Body=bytes(rendered_content), Bucket='cdn.neo4jlabs.com', Key='edu-program/' + stage + '/app.js', ACL='public-read', ContentType='text/javascript')
+  cloudfront.create_invalidation(
+      DistributionId=CDN_ID,
+      InvalidationBatch={
+          'Paths': {
+              'Quantity': 1,
+              'Items': ['/*'],
+          },
+          'CallerReference': str(time.time()),
+      }
+  )
   return f['VersionId']
 
 def get_latest_license(key):
@@ -49,13 +63,24 @@ def get_latest_neo4j_inc_license():
 Publish file to S3 and get version
 '''
 def publish_view_license_js(stage):
-  # Create an S3 client
+  # Create an S3 and CloudFront clients
+  cloudfront = boto3.client('cloudfront')
   s3 = boto3.client('s3')
   with fapp.app_context():
     tmpl_vars = {'API_BASE_URL': API_BASE_URL[stage]}
     rendered_content = render_template('dist/license.js', **tmpl_vars)
     rendered_content = rendered_content.encode('ascii', 'ignore')
   f = s3.put_object(Body=bytes(rendered_content), Bucket='cdn.neo4jlabs.com', Key='edu-program/' + stage + '/view-edu-license.js', ACL='public-read', ContentType='text/javascript')
+  cloudfront.create_invalidation(
+      DistributionId=CDN_ID,
+      InvalidationBatch={
+          'Paths': {
+              'Quantity': 1,
+              'Items': ['/*'],
+          },
+          'CallerReference': str(time.time()),
+      }
+  )
   return f['VersionId']
 
 
