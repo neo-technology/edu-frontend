@@ -1,0 +1,29 @@
+= Neo4j Educator Program - Frontend
+
+https://neo4j.com/graphacademy/edu-program[https://neo4j.com/graphacademy/edu-program^]
+
+This repository is the frontend code for the Neo4j Educator Program website. It includes the following components:
+
+* HTML and CSS for the landing page
+** HTML for the application form
+* HTML for the view-license page
+* JavaScript for form validation and submission
+
+== Updating the webpage
+
+Updates need to be made to the code here, and not in Wordpress. Once ready to publish, push code to this repository and run the publish script, as described below.
+
+1. Set environment variables for Wordpress to publish
+[source,shell]
+----
+export PUBLISH_DOCS_PASSWORD="<password>"
+export PUBLISH_DOCS_USERNAME="<username>"
+----
+2. Run script
+[source,shell]
+----
+python publish.py --stage <stage>
+----
+== Accompanying repositories
+
+The backend repository that accompanies this frontend is available at https://github.com/neo-technology/edu-api[https://github.com/neo-technology/edu-api^]. This repository contains the AWS Lambdas and Cypher queries that create, approve, and save the application.
