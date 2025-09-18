@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js",
     "publish-develop": "npm run build && python publish.py",
-    "publish-prod": "npm run build && python publish.py --stage prod"
+    "publish-master": "npm run build && python publish.py --stage prod"
   },
   "repository": {
     "type": "git",
