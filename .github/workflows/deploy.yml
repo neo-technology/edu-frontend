@@ -31,7 +31,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Install Node requirements
-        run: npm i
+        run: npm ci
 
       - name: Install Python requirements
         run: pip install -r requirements.txt

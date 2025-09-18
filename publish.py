@@ -143,11 +143,11 @@ def main(argv):
     with fapp.app_context():
       tmpl_vars = {'js_location': 'https://cdn.neo4jlabs.com/edu-program/' + stage + '/app.js', 'js_version': appVersionId, 'neo4j_inc_license_url': get_latest_neo4j_inc_license()}
       rendered_content = render_template('html/index.html', **tmpl_vars)
-      pageContent = update_wordpress_page(LANDING_PAGE[stage], rendered_content)
+      update_wordpress_page(LANDING_PAGE[stage], rendered_content)
 
       tmpl_vars = {'js_location': 'https://cdn.neo4jlabs.com/edu-program/' + stage + '/view-edu-license.js', 'js_version': viewLicenseVersionId}
       rendered_content = render_template('html/view-edu-license.html', **tmpl_vars)
-      pageContent = update_wordpress_page(LICENSE_PAGE[stage], rendered_content)
+      update_wordpress_page(LICENSE_PAGE[stage], rendered_content)
   else:
     print("Environment variables for PUBLISH_DOCS_USERNAME and PUBLISH_DOCS_PASSWORD must be set")
     sys.exit()
